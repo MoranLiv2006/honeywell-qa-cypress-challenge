@@ -6,15 +6,19 @@ Phone: 672-963-6730
 
 import { assert } from "chai";
 import TestPage from "../pageObjects/testPage";
+import SharedData from "../fixtures/sharedData";
 
 describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - positive test cases", () => {
 
-    const serverUrl = "http://localhost:3000/";
     const testPage = new TestPage;
+    const sharedData = new SharedData;
 
     beforeEach(() => {
         //Before every test navigate to the server url
-        cy.visit(serverUrl);
+        //The server url is stored in the value.json file inside the 'fixture' section.
+        cy.fixture("values.json").then((data) => {
+            cy.visit(data.serverUrl)
+        });
 
         //Verify the test page loaded properly by checking if the "h1" title is visible and has the correct text
         testPage.getH1Title().should("be.visible").then((x) => assert.equal(x.text(), "Enter a number to get the median of primes:"))
@@ -25,32 +29,62 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - positive 
 
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
-        testPage.getTheResultValue().then((x) => {
-            let returnedValue = (x.text().split(":")[1]).trim();
-            expect(returnedValue).to.contain("2")
-        })
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2");
     })
 
-    it("Verify median number is presented when typing a value that has 2 medians", () => {
+    it("Verify median number is presented when typing a prime value that has 2 medians", () => {
+        let value = 5;
+
+        testPage.writeValueInTheInputField(value);
+        testPage.clickOnTheSubmitButton();
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2,3");
+    })
+
+    it("Verify median number is presented when typing 2 digits prime value", () => {
+        let value = 13;
+
+        testPage.writeValueInTheInputField(value);
+        testPage.clickOnTheSubmitButton();
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "5");
+    })
+
+    it("Verify the application shows the correct results when submiting 2 close number such as 4 and 5", () => {
         let value = 4;
 
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
-        testPage.getTheResultValue().then((x) => {
-            let returnedValue = (x.text().split(":")[1]).trim();
-            expect(returnedValue).to.contain("2,3")
-        })
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2,3");
+
+        value = 5
+        testPage.writeValueInTheInputField(value);
+        testPage.clickOnTheSubmitButton();
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2,3");
     })
 
-    it("Verify median number is presented when typing 2 digits value", () => {
-        let value = 10;
+    it("Verify median number is presented when typing 2 digits non prime value", () => {
+        let value = 16;
 
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
-        testPage.getTheResultValue().then((x) => {
-            let returnedValue = (x.text().split(":")[1]).trim();
-            expect(returnedValue).to.contain("3,5")
-        })
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "5,7");
+    })
+
+    it("Verify that the application works good after writing and changing non numeric value", () => {
+        let charValue = "abc";
+        cy.get(testPage.input_numbersInput).type(charValue).should("not.have.value", charValue);
+        
+        let value = 16;
+
+        testPage.writeValueInTheInputField(value);
+        testPage.clickOnTheSubmitButton();
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "5,7");
+    })
+
+    it("Verify the application can stand with lots of requests", () => {
+        for (let i = 1; i < 35; i++) {
+            testPage.writeValueInTheInputField(i);
+            testPage.clickOnTheSubmitButton();
+        }
     })
 
 })
