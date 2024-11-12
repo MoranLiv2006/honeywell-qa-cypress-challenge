@@ -4,7 +4,6 @@ Email: moran.liv2006@gmail.com
 Phone: 672-963-6730
 */
 
-// import { assert, expect } from "chai";
 import TestPage from "../pageObjects/testPage";
 import SharedData from "../fixtures/sharedData";
 
