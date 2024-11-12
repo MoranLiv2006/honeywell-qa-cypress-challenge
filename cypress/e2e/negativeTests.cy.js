@@ -28,8 +28,6 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - negative 
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
         sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, ",")
-
-
     })
 
     it("Try to submit non numeric value", () => {
@@ -48,7 +46,6 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - negative 
     it("Try to reach to unknown url suffix", () => {
         cy.fixture("values.json").then((data) => {
             cy.request({url: data.serverUrl + "api/", failOnStatusCode: false}).its('status').should('eq', 404)
-            cy.visit(data.serverUrl + "api/", {failOnStatusCode: false})
         })
     })
 

@@ -72,7 +72,7 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - positive 
     it("Verify that the application works good after writing and changing non numeric value", () => {
         let charValue = "abc";
         cy.get(testPage.input_numbersInput).type(charValue).should("not.have.value", charValue);
-        
+
         let value = 16;
 
         testPage.writeValueInTheInputField(value);
