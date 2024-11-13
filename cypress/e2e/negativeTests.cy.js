@@ -35,6 +35,11 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - negative 
         cy.get(testPage.input_numbersInput).type(charValue).should("not.have.value", charValue);
     })
 
+    it("Try to submit special character value", () => {
+        let charValue = "@#$";
+        cy.get(testPage.input_numbersInput).type(charValue).should("not.have.value", charValue);
+    })
+
     it("Try to submit very big value and verify alert message", () => {
         testPage.writeValueInTheInputField(999999999999999999999);
         testPage.clickOnTheSubmitButton();

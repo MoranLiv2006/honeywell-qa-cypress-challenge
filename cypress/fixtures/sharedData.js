@@ -9,7 +9,11 @@ class SharedMethods {
             let returnedValue = (x.text().split(":")[1]).trim();
             expect(returnedValue).to.contain(expectedValue);
             cy.fixture("values.json").then((data) => {
-                cy.request(data.serverUrl + "api/" + enteredValue).its('status').should('eq',200);
+                cy.request("GET", data.serverUrl + "api/" + enteredValue).then((response) => {
+                    expect(response.status).to.eq(200);
+                    expect(response.body).to.have.property("median");
+                    expect((response.body.median).toString()).to.contain(expectedValue);
+                });
             });
         })
     }

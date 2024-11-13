@@ -81,6 +81,14 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - positive 
         sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "5,7");
     })
 
+    it("Verify that the application works good when submitting a decimal number", () => {
+        let value = 9.5;
+
+        testPage.writeValueInTheInputField(value);
+        testPage.clickOnTheSubmitButton();
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "3,5");
+    })
+
     it("Verify the application can stand with lots of requests", () => {
         for (let i = 1; i < 35; i++) {
             testPage.writeValueInTheInputField(i);
