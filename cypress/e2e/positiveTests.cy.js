@@ -48,17 +48,18 @@ describe("Honeywell BrokerBay Median-Prime-Numbers Cypress Challenge - positive 
         sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "5");
     })
 
-    it("Verify the application shows the correct results when submiting 2 close number such as 4 and 5", () => {
+    it("Verify the application shows the correct results when submitting 2 close number when one of them is prime and the second isn't a prime number, such as 4 and 5", () => {
         let value = 4;
+        const expectedResult = "2,3";
 
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
-        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2,3");
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, expectedResult);
 
         value = 5
         testPage.writeValueInTheInputField(value);
         testPage.clickOnTheSubmitButton();
-        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, "2,3");
+        sharedData.checkThatExpectedMedianValuesAreContainInTheResultValue(value, expectedResult);
     })
 
     it("Verify median number is presented when typing 2 digits non prime value", () => {
